@@ -19,7 +19,7 @@ function App() {
                     setScroll(scroll + (e.deltaY))
                     return;
                 }}
-                className={`flex justify-between items-start w-full h-full gap-4 px-32`}>
+                className={`flex justify-between items-start w-full h-full gap-4 px-32 bg-black`}>
                 <div className={`w-[20%] flex flex-col items-start`}>
                     {/*    TODO List */}
 
@@ -39,7 +39,7 @@ function App() {
                     {selectedItem === "Projects" && <Projects />}
                 </div>
             </div>
-            <div className={`w-screen leading-64 font-['Jersey_25'] text-[384px]`}>
+            <div className={`w-screen leading-64 font-['Jersey_25'] text-[384px] text-shadow-black text-shadow-lg/100`}>
                 Yash Bokade
             </div>
         </>
