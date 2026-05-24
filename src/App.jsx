@@ -39,7 +39,7 @@ function App() {
                     {selectedItem === "Projects" && <Projects />}
                 </div>
             </div>
-            <div className={`w-screen leading-64 font-['Jersey_25'] text-[384px] text-shadow-black text-shadow-lg/100`}>
+            <div className={`w-screen leading-64 font-['Jersey_25'] text-[384px] bg-clip-text text-transparent  bg-linear-180 from-[#c8ffc8] to-[#0000] text-shadow-[#c8ffc8] text-shadow-lg/10`}>
                 Yash Bokade
             </div>
         </>

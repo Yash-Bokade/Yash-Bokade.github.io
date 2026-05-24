@@ -102,5 +102,5 @@ button:focus-visible {
 
 img::selection {
   filter: grayscale(0);
-  background-color: #008500;
+  background-color: rgb(216, 255, 200);
 }
