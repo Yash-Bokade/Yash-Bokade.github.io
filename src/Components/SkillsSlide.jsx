@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-import { BEBAS, PX10, PX25, SANS, SKILLS } from "./constants";
+import { PX10, PX25, SKILLS } from "./constants";
 
 // ─── Category accent colors ────────────────────────────────────────────────────
 const CAT_COLORS = {
   MOTION:   "#a78bfa",
   FRONTEND: "#60a5fa",
   TOOLING:  "#34d399",
-  GRAPHICS: "#f97316",
+  AI:       "#22d3ee",
   LANGUAGE: "#f472b6",
-  STYLING:  "#fbbf24",
 };
 
+const CAT_ORDER = ["LANGUAGE", "FRONTEND", "MOTION", "AI", "TOOLING"];
 const HEX = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
 
 // ─── Pulsing center glow ───────────────────────────────────────────────────────
@@ -19,17 +19,19 @@ function CenterGlow() {
   const ref = useRef(null);
   useEffect(() => {
     gsap.to(ref.current, {
-      scale: 1.35, opacity: 0.06,
-      duration: 2.2, repeat: -1, yoyo: true, ease: "sine.inOut",
+      scale: 1.4, opacity: 0.05,
+      duration: 2.4, repeat: -1, yoyo: true, ease: "sine.inOut",
     });
   }, []);
   return (
     <div ref={ref} style={{
       position: "absolute",
-      width: "260px", height: "260px",
+      width: "220px", height: "220px",
       borderRadius: "50%",
-      background: "radial-gradient(circle, rgba(167,139,250,0.35) 0%, transparent 70%)",
-      pointerEvents: "none", zIndex: 0,
+      background: "radial-gradient(circle, rgba(100,100,100,0.35) 0%, transparent 70%)",
+      pointerEvents: "none",
+      left: "50%", top: "50%",
+      transform: "translate(-50%, -50%)",
     }} />
   );
 }
@@ -44,9 +46,9 @@ function HexCard({ skill, w, h, isCenter, hovered, setHovered }) {
   useEffect(() => {
     if (!ref.current) return;
     gsap.to(ref.current, {
-      scale:   isActive ? 1.2 : isDimmed ? 0.85 : 1,
+      scale:   isActive ? 1.12 : isDimmed ? 0.9 : 1,
       opacity: isDimmed ? 0.2 : 1,
-      duration: 0.35,
+      duration: 0.3,
       ease: "power2.out",
     });
   }, [isActive, isDimmed]);
@@ -58,19 +60,29 @@ function HexCard({ skill, w, h, isCenter, hovered, setHovered }) {
       onMouseLeave={() => setHovered(null)}
       style={{ cursor: "crosshair", userSelect: "none" }}
     >
-      {/* Hex shape */}
       <div style={{
         width: w, height: h,
         clipPath: HEX,
         background: isActive
-          ? `linear-gradient(135deg, ${color}22, ${color}48)`
+          ? `linear-gradient(135deg, ${color}12, ${color}50)`
           : isCenter
           ? "rgba(255,255,255,0.09)"
           : "rgba(255,255,255,0.04)",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         position: "relative",
+        transition: "background 0.3s",
       }}>
+        {/* Inner hex border ring */}
+        <div style={{
+          position: "absolute",
+          inset: isCenter ? "5px" : "2px",
+          clipPath: HEX,
+          outline: `1px solid ${isActive ? color : "rgba(255,255,255,0.1)"}`,
+          transition: "outline-color 0.3s",
+          pointerEvents: "none",
+        }} />
+
         {/* Dot-grid fill for center */}
         {isCenter && (
           <div style={{
@@ -81,27 +93,17 @@ function HexCard({ skill, w, h, isCenter, hovered, setHovered }) {
           }} />
         )}
 
-        {/* Inner hex border ring */}
-        <div style={{
-          position: "absolute",
-          inset: isCenter ? "5px" : "3px",
-          clipPath: HEX,
-          outline: `1px solid ${isActive ? color : "rgba(255,255,255,0.1)"}`,
-          transition: "outline-color 0.3s",
-          pointerEvents: "none",
-        }} />
-
         {/* Label */}
         <span style={{
           fontFamily: PX25,
           fontSize: isCenter
-            ? "clamp(0.8rem, 1.2vw, 1rem)"
-            : "clamp(0.58rem, 0.85vw, 0.78rem)",
+            ? "clamp(0.75rem, 1.1vw, 0.95rem)"
+            : "clamp(0.46rem, 0.68vw, 0.6rem)",
           color: isActive ? color : "#fff",
-          letterSpacing: "0.07em",
+          letterSpacing: "0.06em",
           textAlign: "center",
-          padding: "0 8px",
-          lineHeight: 1.25,
+          padding: "0 6px",
+          lineHeight: 1.2,
           position: "relative", zIndex: 1,
           transition: "color 0.25s",
         }}>
@@ -111,26 +113,26 @@ function HexCard({ skill, w, h, isCenter, hovered, setHovered }) {
         {/* Sub-label */}
         <span style={{
           fontFamily: PX10,
-          fontSize: "0.46rem",
-          color: isActive ? color : "rgba(255,255,255,0.25)",
+          fontSize: isCenter ? "0.42rem" : "0.34rem",
+          color: isActive ? color : "rgba(255,255,255,0.22)",
           letterSpacing: "0.1em",
-          marginTop: "3px",
+          marginTop: "2px",
           textAlign: "center",
-          padding: "0 6px",
+          padding: "0 4px",
           position: "relative", zIndex: 1,
           transition: "color 0.25s",
         }}>
-          {isCenter ? skill.sub : skill.cat}
+          {skill.sub}
         </span>
 
         {/* Center extra decoration */}
         {isCenter && (
           <>
-            <div style={{ width: "22px", height: "1px", background: "rgba(255,255,255,0.18)", marginTop: "7px", position: "relative", zIndex: 1 }} />
+            <div style={{ width: "20px", height: "1px", background: "rgba(255,255,255,0.18)", marginTop: "6px", position: "relative", zIndex: 1 }} />
             <span style={{
-              fontFamily: PX10, fontSize: "0.42rem",
+              fontFamily: PX10, fontSize: "0.36rem",
               color: "rgba(255,255,255,0.18)", letterSpacing: "0.18em",
-              marginTop: "5px", textAlign: "center",
+              marginTop: "4px", textAlign: "center",
               position: "relative", zIndex: 1,
             }}>
               CORE SKILL
@@ -142,93 +144,120 @@ function HexCard({ skill, w, h, isCenter, hovered, setHovered }) {
   );
 }
 
-// ─── Orbiting ring of hexes ────────────────────────────────────────────────────
-function SkillOrbit({ skills, radius, duration, direction, hexW, hexH, hovered, setHovered }) {
-  const itemRefs = useRef([]);
+// ─── Category column with diagonal hex cascade ────────────────────────────────
+function CategoryGroup({ category, skills, color, hexW, hovered, setHovered }) {
+  const hexH    = Math.round(hexW * 1.15);
+  const xStep   = hexW * 0.38;   // horizontal shift per row (diagonal offset)
+  const yStep   = hexH * 0.76;   // vertical spacing between rows
+  const colGap  = hexW * 0.76;   // gap between 2 hexes in the same row
 
+  const cols = 2;
+  const rows = Math.ceil(skills.length / cols);
+
+  const totalW = (rows > 0 ? (rows - 1) * xStep : 0) + colGap + hexW;
+  const totalH = (rows > 0 ? (rows - 1) * yStep : 0) + hexH;
+
+  // Entry animation per group
+  const groupRef = useRef(null);
   useEffect(() => {
-    const n       = skills.length;
-    const offsets = skills.map((_, i) => (i / n) * Math.PI * 2 - Math.PI / 2);
-    const proxy   = { a: 0 };
-
-    // Set initial positions immediately
-    offsets.forEach((off, i) => {
-      const el = itemRefs.current[i];
-      if (!el) return;
-      gsap.set(el, {
-        x: Math.cos(off) * radius,
-        y: Math.sin(off) * radius,
-      });
-    });
-
-    const tween = gsap.to(proxy, {
-      a: direction * Math.PI * 2,
-      duration,
-      ease: "none",
-      repeat: -1,
-      onUpdate: () => {
-        offsets.forEach((off, i) => {
-          const el = itemRefs.current[i];
-          if (!el) return;
-          const angle = off + proxy.a;
-          gsap.set(el, {
-            x: Math.cos(angle) * radius,
-            y: Math.sin(angle) * radius,
-          });
-        });
-      },
-    });
-
-    return () => tween.kill();
-  }, [radius, duration, direction]);
+    if (!groupRef.current) return;
+    const hexEls = groupRef.current.querySelectorAll("[data-hex]");
+    gsap.fromTo(hexEls,
+      { opacity: 0, y: 20, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.06, ease: "back.out(1.4)", delay: 0.4 }
+    );
+  }, []);
 
   return (
-    <>
-      {skills.map((skill, i) => (
-        <div
-          key={skill.label}
-          ref={el => itemRefs.current[i] = el}
-          style={{
-            position: "absolute",
-            left: "50%", top: "50%",
-            marginLeft: -hexW / 2,
-            marginTop: -hexH / 2,
-            zIndex: 5,
-          }}
-        >
-          <HexCard
-            skill={skill}
-            w={hexW} h={hexH}
-            hovered={hovered}
-            setHovered={setHovered}
-          />
-        </div>
-      ))}
-    </>
+    <div ref={groupRef} style={{
+      display: "flex", flexDirection: "column",
+      alignItems: "center", gap: "0.6rem",
+      flexShrink: 0,
+    }}>
+      {/* Category label */}
+      <span style={{
+        fontFamily: PX10,
+        fontSize: "0.46rem",
+        letterSpacing: "0.22em",
+        color,
+        opacity: 0.5,
+        whiteSpace: "nowrap",
+      }}>
+        {category}
+      </span>
+
+      {/* Diagonal hex cascade grid */}
+      <div style={{
+        position: "relative",
+        width: totalW,
+        height: totalH,
+      }}>
+        {skills.map((skill, i) => {
+          const row = Math.floor(i / cols);
+          const col = i % cols;
+          const x = row * xStep + col * colGap;
+          const y = row * yStep;
+
+          return (
+            <div
+              key={skill.label}
+              data-hex
+              style={{
+                position: "absolute",
+                left: x,
+                top: y,
+              }}
+            >
+              <HexCard
+                skill={skill}
+                w={hexW}
+                h={hexH}
+                hovered={hovered}
+                setHovered={setHovered}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-// ─── Skills Slide — orbital hex grid ──────────────────────────────────────────
+// ─── Skills Slide — diagonal hex cascade grid ─────────────────────────────────
 export default function SkillsSlide() {
   const [hovered, setHovered] = useState(null);
   const hoveredSkill = SKILLS.find(s => s.label === hovered);
 
-  // Distribution: center / inner ring / outer ring
-  const center = SKILLS[0];
-  const inner  = SKILLS.slice(1, 5);
-  const outer  = SKILLS.slice(5);
+  const headerRef  = useRef(null);
+  const contentRef = useRef(null);
+  const footerRef  = useRef(null);
 
-  // Sizes (px)
-  const INNER_R  = 195, OUTER_R  = 340;
-  const CENTER_W = 148, CENTER_H = 172;
-  const INNER_W  = 108, INNER_H  = 125;
-  const OUTER_W  = 92,  OUTER_H  = 107;
+  // Derive center skill + category groups
+  const { center, categories } = useMemo(() => {
+    const centerSkill = SKILLS.find(s => s.center) || SKILLS[0];
+    const nonCenter   = SKILLS.filter(s => s !== centerSkill);
 
-  // Entry animation refs
-  const headerRef = useRef(null);
-  const orbitRef  = useRef(null);
-  const footerRef = useRef(null);
+    const catMap = {};
+    nonCenter.forEach(s => {
+      if (!catMap[s.cat]) catMap[s.cat] = [];
+      catMap[s.cat].push(s);
+    });
 
+    const sorted = CAT_ORDER
+      .filter(cat => catMap[cat])
+      .map(cat => ({
+        cat,
+        skills: catMap[cat],
+        color: CAT_COLORS[cat] || "#fff",
+      }));
+
+    return { center: centerSkill, categories: sorted };
+  }, []);
+
+  const CENTER_W = 140, CENTER_H = 162;
+  const HEX_W = 70;
+
+  // Entry animations
   useEffect(() => {
     gsap.fromTo(
       [headerRef.current, footerRef.current],
@@ -236,9 +265,9 @@ export default function SkillsSlide() {
       { opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: "power2.out", delay: 0.1 }
     );
     gsap.fromTo(
-      orbitRef.current,
-      { opacity: 0, scale: 0.88 },
-      { opacity: 1, scale: 1, duration: 1.1, ease: "expo.out", delay: 0.2 }
+      contentRef.current,
+      { opacity: 0, x: -30 },
+      { opacity: 1, x: 0, duration: 1, ease: "expo.out", delay: 0.15 }
     );
   }, []);
 
@@ -253,7 +282,7 @@ export default function SkillsSlide() {
       {/* Subtle radial bg glow */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 60% 60% at 50% 52%, rgba(30,20,60,0.55) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 50% 55% at 25% 50%, rgba(30,20,60,0.5) 0%, transparent 70%)",
         pointerEvents: "none", zIndex: 0,
       }} />
 
@@ -268,64 +297,56 @@ export default function SkillsSlide() {
           &gt; SKILLS
         </span>
         <span style={{ fontFamily: PX10, fontSize: "0.65rem", color: "rgba(255,255,255,0.15)", letterSpacing: "0.22em" }}>
-          {SKILLS.length} TECHNOLOGIES · HOVER TO INSPECT
+          {SKILLS.length} TECHNOLOGIES · {categories.length} CATEGORIES · HOVER TO INSPECT
         </span>
       </div>
 
-      {/* ── Orbital system ── */}
-      <div ref={orbitRef} style={{
-        flex: 1, position: "relative",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        zIndex: 2,
+      {/* ── Main content — big hex + category cascade columns ── */}
+      <div ref={contentRef} style={{
+        flex: 1,
+        display: "flex",
+        alignItems: "center",
+        gap: "clamp(1.5rem, 2.8vw, 3rem)",
+        padding: "2vw 5vw",
+        position: "relative", zIndex: 2,
+        overflow: "auto",
       }}>
-        {/* Orbit path rings */}
-        {[INNER_R, OUTER_R].map((r, i) => (
-          <div key={i} style={{
-            position: "absolute",
-            width: r * 2, height: r * 2,
-            borderRadius: "50%",
-            border: `1px ${i === 0 ? "dashed" : "dotted"} rgba(255,255,255,${i === 0 ? "0.07" : "0.04"})`,
-            pointerEvents: "none",
-          }} />
-        ))}
-
-        {/* Center glow */}
-        <CenterGlow />
-
-        {/* Center hex */}
-        <div style={{ position: "absolute", zIndex: 10 }}>
+        {/* Center hex with pulsing glow */}
+        <div style={{
+          position: "relative", flexShrink: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <CenterGlow />
           <HexCard
             skill={center}
-            w={CENTER_W} h={CENTER_H}
+            w={CENTER_W}
+            h={CENTER_H}
             isCenter
             hovered={hovered}
             setHovered={setHovered}
           />
         </div>
 
-        {/* Inner orbit — rotates CW */}
-        <SkillOrbit
-          skills={inner}
-          radius={INNER_R}
-          duration={35}
-          direction={1}
-          hexW={INNER_W}
-          hexH={INNER_H}
-          hovered={hovered}
-          setHovered={setHovered}
-        />
+        {/* Vertical separator */}
+        <div style={{
+          width: "1px",
+          height: "55%",
+          background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.08), transparent)",
+          flexShrink: 0,
+        }} />
 
-        {/* Outer orbit — rotates CCW */}
-        <SkillOrbit
-          skills={outer}
-          radius={OUTER_R}
-          duration={55}
-          direction={-1}
-          hexW={OUTER_W}
-          hexH={OUTER_H}
-          hovered={hovered}
-          setHovered={setHovered}
-        />
+        {/* Category groups — diagonal hex cascades */}
+        {categories.map(({ cat, skills, color }) => (
+          <CategoryGroup
+            key={cat}
+            category={cat}
+            skills={skills}
+            color={color}
+            hexW={HEX_W}
+            hovered={hovered}
+            setHovered={setHovered}
+          />
+        ))}
       </div>
 
       {/* ── Hover info footer ── */}

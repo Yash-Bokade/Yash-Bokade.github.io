@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { SANS } from "./constants";
 
 // ─── About word stagger (gray → black) ────────────────────────────────────────
-const ABOUT_WORDS = "I design and engineer interactive interfaces that command attention through typography rhythm and deliberate motion. Monochromatic palettes zero rounded corners and grainy textures define my visual language.".split(" ");
+const ABOUT_WORDS = "A Computer Engineering student aiming to be a skilled Developer while enhancing skills in modern Frameworks to become a proficient developer with the ability to create efficient Applications. I build interactive web experiences with React Next.js and animation libraries like GSAP and Motion.dev.".split(" ");
 
 export default function StaggeredAbout() {
   const containerRef = useRef(null);

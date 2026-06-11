@@ -26,7 +26,7 @@ export default function AboutSlide() {
 
           {/* Pixel-style tech list */}
           <div className="slide-text" style={{ display: "flex", flexDirection: "column", gap: "0.5rem", justifyContent: "center" }}>
-            {["GSAP ANIMATION", "REACT 19", "VITE / BUN", "CANVAS & WEBGL"].map((t, i) => (
+            {["REACT.JS", "NEXT.JS & VITE+", "GSAP & MOTION.DEV", "KOTLIN & JAVA"].map((t, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <span style={{ fontFamily: PX10, fontSize: "0.75rem", color: "rgba(0,0,0,0.3)" }}>
                   [{String(i + 1).padStart(2, "0")}]

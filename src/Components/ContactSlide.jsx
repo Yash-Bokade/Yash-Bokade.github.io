@@ -121,7 +121,7 @@ function EmailLink() {
     <div style={{ position: "relative", display: "inline-block" }}>
       <a
         ref={ref}
-        href="mailto:yash.bokade@gmail.com"
+        href="mailto:yash.mahendra.bokade@gmail.com"
         onMouseEnter={enter}
         onMouseLeave={leave}
         style={{
@@ -135,7 +135,7 @@ function EmailLink() {
           paddingBottom: "6px",
         }}
       >
-        yash.bokade@gmail.com
+        yash.mahendra.bokade@gmail.com
       </a>
       <div
         ref={lineRef}
@@ -264,8 +264,8 @@ export default function ContactSlide() {
           {/* Social links */}
           <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
             <SocialPill href="https://github.com/Yash-Bokade" label="GITHUB →" />
-            <SocialPill href="https://linkedin.com" label="LINKEDIN →" />
-            <SocialPill href="https://twitter.com" label="TWITTER →" />
+            <SocialPill href="https://linkedin.com/in/YashBokade" label="LINKEDIN →" />
+            <SocialPill href="tel:+918459850489" label="+91 8459850489" />
           </div>
 
           {/* Tagline */}
@@ -296,7 +296,7 @@ export default function ContactSlide() {
           © {new Date().getFullYear()} YASH BOKADE
         </span>
         <span style={{ fontFamily: PX10, fontSize: "0.65rem", color: "rgba(255,255,255,0.12)", letterSpacing: "0.2em" }}>
-          INDIA · CREATIVE DEVELOPER
+          INDIA · COMPUTER ENGINEER
         </span>
       </div>
     </div>

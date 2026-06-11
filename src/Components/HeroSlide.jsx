@@ -33,7 +33,7 @@ export default function HeroSlide() {
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <span style={{ fontFamily: PX10, fontSize: "0.72rem", letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)" }}>
-          CREATIVE DEVELOPER · INDIA
+          COMPUTER ENGINEER · INDIA
         </span>
         <ScrollHint />
         <span style={{ fontFamily: PX10, fontSize: "0.72rem", letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)" }}>
